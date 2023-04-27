@@ -2,6 +2,7 @@ const canvas = document.getElementById('canvas');
 const c = canvas.getContext('2d');
 const puntuaje = document.getElementById('puntuaje')
 const time = document.getElementById('time')
+const velocidad = document.getElementById('velocidad')
 
 canvas.width = 64 * 32;
 canvas.height = 64 * 18;
@@ -12,37 +13,46 @@ imVerde.src = flechaverde
 const flecharoja = "./assets/flechaRojo.png";
 const imRojo = new Image();
 imRojo.src = flecharoja
+const neutra = "./assets/Untitled-1.png";
+const imgneutra = new Image();
+imgneutra.src = flecharoja
 const flechaazul = "./assets/flechaAzul.png";
 const imAzul = new Image();
 imAzul.src = flechaazul
+
 const flechaamarilla = "./assets/flechaAmarillo.png";
+const flechaamarilla2 = "./assets/flechaAmarillo2.png";
 const imAmarillo = new Image();
 imAmarillo.src = flechaamarilla
-
-const hightAmarillo = 100
-const hightRojo = 250
-const hightVerde = 400
-const hightAzul = 559
-let rangoJuego = 1500; //la idea es poder mover esto en un futuro
-let enemySpeed = 5
+let altura = 300;
+const hightAmarillo = altura + 0
+const hightRojo = altura + 150;
+const hightVerde = altura + 300
+const hightAzul = altura + 450
+let rangoJuego = 1700; //la idea es poder mover esto en un futuro
+// let enemySpeed = 7
 let makePoint = true
 let gameOver = false;
 
 let botones = []
 let flechas = [];
 
+
+
 class Game {
   constructor() {
-
+    this.enemySpeed = 5
     this.newArrow = 0;
     this.enemyTime = 0
-    this.enemyInterval = 1500
+    this.enemyInterval = 1000
     this.time = 0;
     this.maxTime = 20000;
-
     this.score = 0;
+    this.backGround = new Image()
+    this.backGround.src = "./assets/wallpaper.png"
   };
   draw(c) {
+    c.drawImage(this.backGround, 0, 0)
 
 
 
@@ -50,17 +60,24 @@ class Game {
 
   }
   update(deltatime) {
-    puntuaje.innerText = game.score
+    // difilcultad 
+    dificultad()
+
+
+    // apuntadores hacia HTML
+    puntuaje.innerText = this.score
     time.innerText = this.time
+    velocidad.innerText = this.enemySpeed
     this.time += deltatime
     if (this.time > this.maxTime) {
-      gameOver = true,
-        mensajeGameOver()
+      // gameOver = true,
+      //   mensajeGameOver()
     }
 
 
   };
   update2(deltatime) {
+
     if (this.enemyTime > this.enemyInterval) {
       this.addEnemy();
       this.enemyTime = 0;
@@ -111,6 +128,34 @@ const nuevaFlechaAzul = () => {
   flechas.push(new Flecha(0, hightAzul, flechaazul))
 }
 
+const dificultad = () => {
+  switch (game.score) {
+    case 5:
+      game.enemySpeed = 6.5
+      break
+    case 10:
+      game.enemySpeed = 7
+      break
+    case 15:
+      game.enemySpeed = 9.5
+      game.enemyInterval = 900
+      break
+    case 20:
+      game.enemySpeed = 11
+      game.enemyInterval = 750
+      break
+    case 25:
+      game.enemySpeed = 14.5
+      game.enemyInterval = 500
+      break
+    case 30:
+      game.enemySpeed = 15.5
+      game.enemyInterval = 600
+      break
+
+  }
+}
+
 class Player {
   constructor(x) {
     this.ArrowUP = {
@@ -123,8 +168,8 @@ class Player {
   };
   draw(c) {
 
-    c.strokeRect(this.ArrowUP.x, this.ArrowUP.y, this.ArrowUP.width, this.ArrowUP.height)
-    c.strokeRect(this.ArrowUP.x - 100, this.ArrowUP.y, this.ArrowUP.width, this.ArrowUP.height)
+    c.strokeRect(this.ArrowUP.x, altura, this.ArrowUP.width, this.ArrowUP.height)
+    c.strokeRect(this.ArrowUP.x - 100, altura, this.ArrowUP.width, this.ArrowUP.height)
     c.drawImage(imVerde, rangoJuego, hightVerde, 100, 100)
     c.drawImage(imRojo, rangoJuego, hightRojo, 100, 100)
     c.drawImage(imAzul, rangoJuego, hightAzul, 100, 100)
@@ -215,6 +260,11 @@ class Player {
   }
 
 }
+const releaseButons = () => { player.keys = [], botones = [] }
+const pushArriba = () => { player.keys.push('ArrowUp') }
+const pushAbajo = () => { player.keys.push('ArrowDown') }
+const pushDerecha = () => { player.keys.push('ArrowRight') }
+const pushIzquierda = () => { player.keys.push('ArrowLeft') }
 
 class PressButton {
   constructor(x, y, imagen) {
@@ -257,7 +307,7 @@ class Flecha {
     c.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
   update() {
-    this.x += enemySpeed;
+    this.x += game.enemySpeed;
     if (this.x > canvas.width) {
       this.markForDelete = true
     }
@@ -273,6 +323,7 @@ const animate = (timeStamp) => {
 
   c.fillStyle = " white"
   c.fillRect(0, 0, canvas.width, canvas.height)
+  game.draw(c)
   c.save()
   c.globalAlpha = 0.3
   player.draw(c)
@@ -289,7 +340,7 @@ const animate = (timeStamp) => {
   }
 
   player.update()
-  game.draw(c)
+
   game.update(deltatime)
   game.update2(deltatime)
 
@@ -298,5 +349,3 @@ const animate = (timeStamp) => {
   }
 };
 animate(0)
-
-
