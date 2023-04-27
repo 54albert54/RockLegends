@@ -46,7 +46,7 @@ class Game {
     this.enemyTime = 0
     this.enemyInterval = 1000
     this.time = 0;
-    this.maxTime = 20000;
+    this.maxTime = 60000;
     this.score = 0;
     this.backGround = new Image()
     this.backGround.src = "./assets/wallpaper.png"
@@ -70,8 +70,8 @@ class Game {
     velocidad.innerText = this.enemySpeed
     this.time += deltatime
     if (this.time > this.maxTime) {
-      // gameOver = true,
-      //   mensajeGameOver()
+      gameOver = true,
+        mensajeGameOver()
     }
 
 
@@ -92,9 +92,7 @@ class Game {
   };
   addEnemy() {
     Math.random() < 0.4 ? nuevaFlechaVerde() : this.addEnemy2()
-    // if (this.speed>0)this.enemies.push(new ClimbingEnemy(this))
 
-    // this.enemies.push(new FlyingEnemy(this))
   }
   addEnemy2() {
     Math.random() < 0.6 ? this.addEnemy3() : nuevaFlechaRoja()
