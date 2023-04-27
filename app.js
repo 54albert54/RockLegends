@@ -33,7 +33,7 @@ let rangoJuego = 1700; //la idea es poder mover esto en un futuro
 // let enemySpeed = 7
 let makePoint = true
 let gameOver = false;
-
+let segundos = 0;
 let botones = []
 let flechas = [];
 
@@ -66,7 +66,7 @@ class Game {
 
     // apuntadores hacia HTML
     puntuaje.innerText = this.score
-    time.innerText = this.time
+    // time.innerText = this.time
     velocidad.innerText = this.enemySpeed
     this.time += deltatime
     if (this.time > this.maxTime) {
@@ -102,15 +102,20 @@ class Game {
   }
 }
 
+setInterval(function () {
+  segundos++;
+  time.innerHTML = segundos + ' segundos';
+}, 1000);
+
 const mensajeGameOver = () => {
 
   c.fillStyle = 'white'
   c.fillRect(0, 0, canvas.width, canvas.height)
   c.fillStyle = "black"
   c.font = "150px serif";
-  c.fillText("Game Over ", canvas.width / 2, 200);
+  c.fillText("Game Over ", canvas.width / 4, 200);
   c.font = "50px serif";
-  c.fillText(`tu puntaje fue de ${game.score}`, canvas.width / 2, 250);
+  c.fillText(`tu puntaje fue de ${game.score}`, canvas.width / 4, 250);
 }
 
 const nuevaFlechaVerde = () => {
