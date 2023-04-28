@@ -89,7 +89,7 @@ class Game {
     }
     flechas = flechas.filter(flechas => !flechas.markForDelete)
 
-    // aqui estaba un modulo que no era necesario para nada :D
+    // aqui estaba un modulo que no era necesario para nada :D a verd que otro cambio hag antes de romperlo
 
 
   };
@@ -120,6 +120,7 @@ const mensajeGameOver = () => {
   c.font = "50px serif";
   c.fillText(`tu puntaje fue de ${game.score}`, canvas.width / 4, 250);
 }
+
 
 const nuevaFlechaVerde = () => {
   flechas.push(new Flecha(0, hightVerde, flechaverde))
