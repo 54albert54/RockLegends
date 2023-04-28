@@ -4,8 +4,8 @@ const puntuaje = document.getElementById('puntuaje')
 const time = document.getElementById('time')
 const velocidad = document.getElementById('velocidad')
 
-canvas.width = 64 * 32;
-canvas.height = 64 * 18;
+canvas.width = 64 * 18;  //32
+canvas.height = 64 * 32;  //18
 const flechaverde = "./assets/flechaVerde.png";
 const imVerde = new Image();
 imVerde.src = flechaverde
@@ -54,7 +54,10 @@ class Game {
   draw(c) {
     c.drawImage(this.backGround, 0, 0)
 
-
+    flechas.push(new Flecha(0, hightAzul, flechaazul))
+    flechas.push(new Flecha(0, hightAmarillo, flechaamarilla))
+    flechas.push(new Flecha(0, hightRojo, flecharoja))
+    flechas.push(new Flecha(0, hightVerde, flechaverde))
 
 
 
@@ -79,7 +82,7 @@ class Game {
   update2(deltatime) {
 
     if (this.enemyTime > this.enemyInterval) {
-      this.addEnemy();
+      // this.addEnemy();
       this.enemyTime = 0;
     } else {
       this.enemyTime += deltatime;
@@ -128,7 +131,8 @@ const nuevaFlechaAmarilla = () => {
   flechas.push(new Flecha(0, hightAmarillo, flechaamarilla))
 }
 const nuevaFlechaAzul = () => {
-  flechas.push(new Flecha(0, hightAzul, flechaazul))
+  f
+  lechas.push(new Flecha(0, hightAzul, flechaazul))
 }
 
 const dificultad = () => {
