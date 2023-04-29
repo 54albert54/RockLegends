@@ -12,24 +12,62 @@
 <body>
 
   <div class="mainContainer">
-    <div class="main">
-      <h1>juego</h1>
-      <p>puntuaje <samp id="puntuaje"> </samp> tiempo : <spam id="time"></spam>
-        velocidad:<span id="velocidad"> </span> </p>
-      <canvas id="canvas"></canvas>
+
+
+
+
+    <div class="gameStar ">
+      <h1> </h1>
+
+      <p class="Reinicar" onclick="gameStart()  "> JUGAR</p>
+      <p class="Reinicar" onclick="showopciones()  "> OPCIONES</p>
+      <p onclick="specialmodef()" class="Reinicar"> SpecialMode</p>
+
     </div>
 
-    <div class="botones">
-      <div onclick="pushDerecha()" onmousedown="pushDerecha()" onmouseup="releaseButons()" id="botonDerecho"
-        class="botone"> </div>
+    <div class="opciones noMostrar">
+      <div>
+        <p class="botonOpcion"> segundos</p>
+        <p onclick="shangeTime(30)  " class="botonOpcion"> 30 </p>
+        <p onclick="shangeTime(60)  " class="botonOpcion"> 60 </p>
+        <p onclick="shangeTime(120)  " class="botonOpcion"> 120 </p>
+      </div>
+
+    </div>
+    <div class="gameOver noMostrar">
+      <h1>Fin <br>de la partida</h1>
+      <div>tu puntuaje fue : <br>
+        <samp id="puntuaje"> <br>
+        </samp>
+        <p class="Reinicar" onclick="  location.reload()"> Reinicar</p>
+      </div>
+
+      </p>
+    </div>
+    <div class="botones noMostrar">
+
       <div onclick="pushIzquierda()" onmousedown="pushIzquierda()" onmouseup="releaseButons()" id="botonIzquiera"
         class="botone"></div>
       <div onclick="pushArriba()" onmousedown="pushArriba()" onmouseup="releaseButons()" id="botonArriba"
         class="botone"> </div>
       <div onclick="pushAbajo()" onmousedown="pushAbajo()" onmouseup="releaseButons()" id="botonAbajo" class="botone">
       </div>
+      <div onclick="pushDerecha()" onmousedown="pushDerecha()" onmouseup="releaseButons()" id="botonDerecho"
+        class="botone"> </div>
     </div>
+
+    <div class="main">
+      <canvas id="canvas">
+        <img id="layer1" class="noMostrar" src="./assets/layer1.png" alt="imagendelfondo">
+        <img id="layer2" class="noMostrar" src="./assets/layer2.png" alt="imagendelfondo">
+        <img id="layer3" class="noMostrar" src="./assets/layer3.png" alt="imagendelfondo">
+        <img id="layer4" class="noMostrar" src="./assets/layer4.png" alt="imagendelfondo">
+      </canvas>
+    </div>
+
+
   </div>
+
   <script src="./app.js"></script>
 </body>
 
