@@ -1,13 +1,17 @@
 const canvas = document.getElementById('canvas');
 const c = canvas.getContext('2d');
 const puntuaje = document.getElementById('puntuaje')
-const time = document.getElementById('time')
+
 const divGameOver = document.querySelector('.gameOver')
 const botonera = document.querySelector('.botones')
 const inicio = document.querySelector('.gameStar')
 const opciones = document.querySelector('.opciones')
 
-
+// let suma = 0
+// for (let i = 0; i < 12; i++) {
+//   suma += 486
+//   console.log(suma)
+// }
 
 
 canvas.width = 64 * 18;  //32
@@ -15,6 +19,11 @@ canvas.height = 64 * 32;  //18
 const flechaverde = "./assets/flechaVerde.png";
 const imVerde = new Image();
 imVerde.src = flechaverde
+const bGStatic = new Image()
+bGStatic.src = "./assets/bgstatic.png";
+
+
+
 
 const flecharoja = "./assets/flechaRojo.png";
 const imRojo = new Image();
@@ -41,31 +50,35 @@ const yAzul = altura// + 450
 const xAmarillo = anchura + 300
 const xRojo = anchura + 0;
 const xVerde = anchura + 870
-const xAzul = anchura + 600
+const xAzul = anchura + 590
 
 
-let yJuego = canvas.height - 150;
+let yJuego = canvas.height - 270;
 
 
 
 let rangoJuego = 1700;
-
+let specialmode = false
 let makePoint = true
 let gameOver = true;
+let pintar = false
 let segundos = -1;
 let botones = []
-let flechas = [];
+let flechasDerecha = [];
+let flechasIzquierda = [];
+let flechasArriba = [];
+let flechasAbajo = [];
 
 
 
 class Game {
   constructor() {
-    this.enemySpeed = 5
+    this.enemySpeed = 4
     this.newArrow = 0;
     this.enemyTime = 0
     this.enemyInterval = 1000
     this.time = 0;
-    this.maxTime = 5;
+    this.maxTime = 20;
     this.score = 0;
     this.backGround = new Image()
     this.backGround.src = "./assets/wallpaper.png"
@@ -79,13 +92,14 @@ class Game {
 
 
     // apuntadores hacia HTML
-    puntuaje.innerText = this.score
+
 
 
 
     if (segundos >= this.maxTime) {
       gameOver = true,
-        mensajeGameOver()
+        puntuaje.innerText = this.score
+      mensajeGameOver()
 
     }
 
@@ -99,7 +113,10 @@ class Game {
     } else {
       this.enemyTime += deltatime;
     }
-    flechas = flechas.filter(flechas => !flechas.markForDelete)
+    flechasDerecha = flechasDerecha.filter(flechas => !flechas.markForDelete)
+    flechasIzquierda = flechasIzquierda.filter(flechas => !flechas.markForDelete)
+    flechasArriba = flechasArriba.filter(flechas => !flechas.markForDelete)
+    flechasAbajo = flechasAbajo.filter(flechas => !flechas.markForDelete)
   };
   addEnemy() {
     Math.random() < 0.4 ? nuevaFlechaVerde() : this.addEnemy2()
@@ -115,23 +132,22 @@ class Game {
 
 setInterval(function () {
   segundos++;
-  time.innerHTML = segundos + ' segundos';
 }, 1000);
 
 
 
 
 const nuevaFlechaVerde = () => {
-  flechas.push(new Flecha(xVerde, yVerde, flechaverde))
+  flechasDerecha.push(new Flecha(xVerde, yVerde, flechaverde)) //
 }
 const nuevaFlechaRoja = () => {
-  flechas.push(new Flecha(xRojo, yRojo, flecharoja))
+  flechasIzquierda.push(new Flecha(xRojo, yRojo, flecharoja))
 }
 const nuevaFlechaAmarilla = () => {
-  flechas.push(new Flecha(xAmarillo, yAmarillo, flechaamarilla))
+  flechasArriba.push(new Flecha(xAmarillo, yAmarillo, flechaamarilla))
 }
 const nuevaFlechaAzul = () => {
-  flechas.push(new Flecha(xAzul, yAzul, flechaazul))
+  flechasAbajo.push(new Flecha(xAzul, yAzul, flechaazul))
 }
 
 const dificultad = () => {
@@ -183,36 +199,98 @@ const dificultad = () => {
   }
 }
 
-class Player {
-  constructor(x) {
-    this.ArrowUP = {
+
+class Extras {
+  constructor(x, y, width, height, image) {
+    this.position = {
       x: x,
-      y: 100,
-      width: 100,
-      height: 610
+      y: y,
+      width: 800,
+      height: 800
     };
+    this.image = new Image()
+    this.image.src = image;
+    this.imageWidth = width
+    this.imageHeight = height
+    this.frameX = 0
+    this.frameY = 0
+    this.frameTime = 0
+    this.maxFrame = 16;
+    this.fps = 12;
+    this.frameInterval = 1000 / this.fps;
+    this.frameTime = 0;
+
+  }
+  draw2() {
+
+    c.drawImage(this.image, this.frameX * this.imageWidth, this.frameY * this.imageHeight, this.imageWidth, this.imageHeight, this.position.x, this.position.y, this.position.width, this.position.height)
+
+  }
+
+  update(deltaTime) {
+
+
+    if (this.frameTime > this.frameInterval) {
+      this.frameTime = 0;
+      if (this.frameX < this.maxFrame) this.frameX++;
+      else this.frameX = 0
+    } else this.frameTime += deltaTime;
+  }
+}
+
+
+class Player {
+  constructor() {
+    this.position = {
+      x: 700,
+      y: yJuego - 480,
+      width: 400,
+      height: 400
+    };
+    this.image = new Image()
+    this.image.src = "./assets/player2.png";
+    this.imageWidth = 420
+    this.imageHeight = 470
+    this.frameX = 0
+    this.frameY = 0
     this.keys = [];
+    this.frameTime = 0
+    this.maxFrame = 11;
+    this.fps = 12;
+    this.frameInterval = 1000 / this.fps;
+    this.frameTime = 0;
   };
   draw(c) {
-    c.fillStyle = "black"
-    c.font = '80px Silkscreen'
-    c.fillText('TIEMPO ', canvas.width / 3, 80);
+
     c.fillText(segundos, 510, 157);
-
-
-
+    // flechas semis-transparete para guia
     c.drawImage(imVerde, xVerde, yJuego, 100, 100)
     c.drawImage(imRojo, xRojo, yJuego, 100, 100)
     c.drawImage(imAzul, xAzul, yJuego, 100, 100)
     c.drawImage(imAmarillo, xAmarillo, yJuego, 100, 100)
+  }
 
+  draw2() {
+
+    c.fillStyle = "black"
+    c.font = '80px Silkscreen'
+    c.fillText('TIEMPO ', canvas.width / 3, 80);
+    this.acctionKey()
 
   }
-  update() {
+  update(deltaTime) {
+    c.drawImage(this.image, this.frameX * this.imageWidth, this.frameY * this.imageHeight, this.imageWidth, this.imageHeight, this.position.x, this.position.y, this.position.width, this.position.height)
+
+    if (this.frameTime > this.frameInterval) {
+      this.frameTime = 0;
+      if (this.frameX < this.maxFrame) this.frameX++;
+      else this.frameX = 0
+    } else this.frameTime += deltaTime;
 
 
 
-    this.acctionKey()
+
+
   }
   Arrow(x, y, width, height, color) {
     x = x;
@@ -261,28 +339,39 @@ class Player {
   acctionKey() {
     this.input()
 
-    if (this.keys == 'ArrowRight') pressButon(xVerde, yJuego, flechaverde), this.colitionArrow()
-    else if (this.keys == 'ArrowLeft') pressButon(xRojo, yJuego, flecharoja), this.colitionArrow()
-    else if (this.keys == 'ArrowDown') pressButon(xAzul, yJuego, flechaazul), this.colitionArrow()
-    else if (this.keys == 'ArrowUp') pressButon(xAmarillo, yJuego, flechaamarilla), this.colitionArrow()
+    flechasDerecha,
+      flechasIzquierda,
+      flechasArriba,
+      flechasAbajo
+
+    if (this.keys == 'ArrowRight') pressButon(xVerde, yJuego, flechaverde), this.colitionArrow(flechasDerecha, 4)
+    else if (this.keys == 'ArrowLeft') pressButon(xRojo, yJuego, flecharoja), this.colitionArrow(flechasIzquierda, 1)
+    else if (this.keys == 'ArrowDown') pressButon(xAzul, yJuego, flechaazul), this.colitionArrow(flechasAbajo, 2)
+    else if (this.keys == 'ArrowUp') pressButon(xAmarillo, yJuego, flechaamarilla), this.colitionArrow(flechasArriba, 3)
 
   }
-  colitionArrow() {
+  colitionArrow(todasFlechas, sprite) {
     if (makePoint) {
-      for (let i = 0; i < flechas.length; i++) {
-        let transicionalArrow = flechas[i]
+
+      for (let i = 0; i < todasFlechas.length; i++) {
+        let transicionalArrow = todasFlechas[i]
         if (botones[0].x <= transicionalArrow.x + 25 &&
           botones[0].x + (botones[0].width / 2) >= transicionalArrow.x &&
           botones[0].y <= transicionalArrow.y + transicionalArrow.height &&
           botones[0].y + botones[0].height >= transicionalArrow.y) {
-          makePoint = false
-
-
-
-          setTimeout(() => {
+          gF.frameY = 1
+          player.frameY = sprite
+          makePoint = false,
             transicionalArrow.markForDelete = true
+          pintar = true
+          setTimeout(() => {
+
+            player.frameY = 0
+            gF.frameY = 0
             game.score++
             makePoint = true
+            pintar = false
+
           }, 500);
         }
 
@@ -298,21 +387,31 @@ const gameStart = () => {
   botonera.classList.remove('noMostrar'), animate(0);
 }
 
+
+
 const showopciones = () => { opciones.classList.add('mostrar'), opciones.classList.remove('noMostrar') }
 const shangeTime = (t) => {
   game.maxTime = t, opciones.classList.add('noMostrar');
 }
+const specialmodef = () => {
+  specialmode = true
+}
 const releaseButons = () => { player.keys = [], botones = [] }
-const pushArriba = () => { player.keys.push('ArrowUp') }
-const pushAbajo = () => { player.keys.push('ArrowDown') }
-const pushDerecha = () => { player.keys.push('ArrowRight') }
-const pushIzquierda = () => { player.keys.push('ArrowLeft') }
+const pushArriba = () => { player.keys.push('ArrowUp'), r2butons() }
+const pushAbajo = () => { player.keys.push('ArrowDown'), r2butons() }
+const pushDerecha = () => { player.keys.push('ArrowRight'), r2butons() }
+const pushIzquierda = () => { player.keys.push('ArrowLeft'), r2butons() }
 const mensajeGameOver = () => {
   divGameOver.classList.add('mostrar')
-
   divGameOver.classList.remove('noMostrar')
 
 }
+const r2butons = () => {
+  setTimeout(() => {
+    player.keys = [], botones = []
+  }, 300)
+}
+
 
 class PressButton {
   constructor(x, y, imagen) {
@@ -328,6 +427,9 @@ class PressButton {
     c.drawImage(this.image, this.x, this.y, this.width, this.height)
   }
 }
+
+
+
 const pressButon = (x, y, imagen) => {
   x = x
   y = y
@@ -342,26 +444,33 @@ class Flecha {
     this.x = x;
     this.y = y;
 
-    this.image = new Image()
-    this.image.src = srcImage
-    this.width = 100;
-    this.height = 100;
+    this.imagefl = new Image()
+    this.imagefl.src = srcImage
+    this.width = 60;
+    this.height = 60;
     this.markForDelete = false;
     this.newArrowGreen = 0
-    this.crecer = .25
+    this.crecer = .1
 
   }
   draw() {
 
-    c.drawImage(this.image, this.x, this.y, this.width, this.height);
+    c.drawImage(this.imagefl, this.x, this.y, this.width, this.height);
   }
   update() {
     this.y += game.enemySpeed;
     // this.x -= .4
-    // this.width += this.crecer
-    // this.height += this.crecer
+    this.width += this.crecer
+    this.height += this.crecer
     if (this.y > canvas.height) {
       this.markForDelete = true
+      player.frameY = 5
+      gF.frameY = 2
+      setTimeout(() => {
+
+        player.frameY = 0
+        gF.frameY = 0
+      }, 5000);
     }
   }
 }
@@ -395,8 +504,8 @@ class BackGround {
     this.imagelayer2 = layer2
     this.imagelayer3 = layer3
     this.imagelayer4 = layer4
-    this.layer1 = new Layer(this.imagelayer1, 0.8)
-    this.layer2 = new Layer(this.imagelayer2, 0.4)
+    this.layer1 = new Layer(this.imagelayer1, 0.2)
+    this.layer2 = new Layer(this.imagelayer2, 0.07) // este est el mar
     this.layer3 = new Layer(this.imagelayer3, 0.6)
     this.layer4 = new Layer(this.imagelayer4, 0)  // este es el fondo azul detras no es necesario qu este moviendo
 
@@ -418,6 +527,11 @@ class BackGround {
 
 let backGround = new BackGround()
 
+
+
+
+
+const gF = new Extras(195, 630, 730, 686, "./assets/GF.png")
 const game = new Game()
 const player = new Player(rangoJuego)
 let lastime = 0
@@ -428,8 +542,22 @@ const animate = (timeStamp) => {
 
   c.fillStyle = " white"
   c.fillRect(0, 0, canvas.width, canvas.height)
-  backGround.draw()
-  backGround.update()
+
+  if (!specialmode) {
+    backGround.draw()
+    backGround.update()
+
+
+  }
+  if (specialmode) {
+    c.drawImage(bGStatic, 0, 0, canvas.width, canvas.height)
+    gF.draw2()
+    gF.update(deltatime)
+    player.update(deltatime)
+
+  }
+
+
   game.draw(c)
 
   c.save()
@@ -437,17 +565,35 @@ const animate = (timeStamp) => {
   player.draw(c)
 
   c.restore()
-  botones.forEach(botones =>
-    botones.draw())
 
+  if (pintar) {
 
-  for (let i = 0; i < flechas.length; i++) {
-    let qv = flechas[i]
-    qv.draw()
-    qv.update()
+    botones.forEach(botones =>
+      botones.draw())
+
   }
 
-  player.update()
+
+
+
+  const lasFlechas = (flechas) => {
+
+    for (let i = 0; i < flechas.length; i++) {
+      let qv = flechas[i]
+      qv.draw()
+      qv.update()
+    }
+  }
+
+  lasFlechas(flechasIzquierda)
+  lasFlechas(flechasDerecha)
+  lasFlechas(flechasAbajo)
+  lasFlechas(flechasArriba)
+
+
+
+
+  player.draw2(c)
 
   game.update(deltatime)
   game.update2(deltatime)
@@ -456,4 +602,3 @@ const animate = (timeStamp) => {
     requestAnimationFrame(animate)
   }
 };
-// animate(0)
