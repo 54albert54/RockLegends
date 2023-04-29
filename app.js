@@ -7,13 +7,6 @@ const botonera = document.querySelector('.botones')
 const inicio = document.querySelector('.gameStar')
 const opciones = document.querySelector('.opciones')
 
-// let suma = 0
-// for (let i = 0; i < 12; i++) {
-//   suma += 486
-//   console.log(suma)
-// }
-
-
 canvas.width = 64 * 18;  //32
 canvas.height = 64 * 32;  //18
 const flechaverde = "./assets/flechaVerde.png";
@@ -21,8 +14,6 @@ const imVerde = new Image();
 imVerde.src = flechaverde
 const bGStatic = new Image()
 bGStatic.src = "./assets/bgstatic.png";
-
-
 
 
 const flecharoja = "./assets/flechaRojo.png";
@@ -44,18 +35,12 @@ const yRojo = altura//+ 150;
 const yVerde = altura// + 300
 const yAzul = altura// + 450
 
-
-
-
 const xAmarillo = anchura + 300
 const xRojo = anchura + 0;
 const xVerde = anchura + 870
 const xAzul = anchura + 590
 
-
 let yJuego = canvas.height - 270;
-
-
 
 let rangoJuego = 1700;
 let specialmode = false
@@ -90,20 +75,11 @@ class Game {
     // difilcultad 
     dificultad()
 
-
-    // apuntadores hacia HTML
-
-
-
-
     if (segundos >= this.maxTime) {
       gameOver = true,
         puntuaje.innerText = this.score
       mensajeGameOver()
-
     }
-
-
   };
   update2(deltatime) {
 
@@ -133,9 +109,6 @@ class Game {
 setInterval(function () {
   segundos++;
 }, 1000);
-
-
-
 
 const nuevaFlechaVerde = () => {
   flechasDerecha.push(new Flecha(xVerde, yVerde, flechaverde)) //
@@ -226,7 +199,6 @@ class Extras {
     c.drawImage(this.image, this.frameX * this.imageWidth, this.frameY * this.imageHeight, this.imageWidth, this.imageHeight, this.position.x, this.position.y, this.position.width, this.position.height)
 
   }
-
   update(deltaTime) {
 
 
@@ -286,10 +258,6 @@ class Player {
       if (this.frameX < this.maxFrame) this.frameX++;
       else this.frameX = 0
     } else this.frameTime += deltaTime;
-
-
-
-
 
   }
   Arrow(x, y, width, height, color) {
@@ -374,11 +342,9 @@ class Player {
 
           }, 500);
         }
-
       }
     }
   }
-
 }
 
 // funciones del HTML
@@ -386,8 +352,6 @@ const gameStart = () => {
   inicio.classList.add('noMostrar')
   botonera.classList.remove('noMostrar'), animate(0);
 }
-
-
 
 const showopciones = () => { opciones.classList.add('mostrar'), opciones.classList.remove('noMostrar') }
 const shangeTime = (t) => {
@@ -427,9 +391,6 @@ class PressButton {
     c.drawImage(this.image, this.x, this.y, this.width, this.height)
   }
 }
-
-
-
 const pressButon = (x, y, imagen) => {
   x = x
   y = y
@@ -467,7 +428,6 @@ class Flecha {
       player.frameY = 5
       gF.frameY = 2
       setTimeout(() => {
-
         player.frameY = 0
         gF.frameY = 0
       }, 5000);
@@ -491,11 +451,8 @@ class Layer {
   draw() {
     c.drawImage(this.image, this.x, this.y, this.width, this.height)
     c.drawImage(this.image, this.x + this.width - this.speedModifier, this.y, this.width, this.height)
-
-
   }
 }
-
 class BackGround {
   constructor() {
     this.width = canvas.width;
@@ -508,9 +465,7 @@ class BackGround {
     this.layer2 = new Layer(this.imagelayer2, 0.07) // este est el mar
     this.layer3 = new Layer(this.imagelayer3, 0.6)
     this.layer4 = new Layer(this.imagelayer4, 0)  // este es el fondo azul detras no es necesario qu este moviendo
-
     this.bGArray = [this.layer4, this.layer2, this.layer3, this.layer1]
-
   }
   update() {
     this.bGArray.forEach(Layer => {
@@ -520,17 +475,11 @@ class BackGround {
   draw() {
     this.bGArray.forEach(Layer => {
       Layer.draw()
-
     })
   }
 }
 
 let backGround = new BackGround()
-
-
-
-
-
 const gF = new Extras(195, 630, 730, 686, "./assets/GF.png")
 const game = new Game()
 const player = new Player(rangoJuego)
@@ -539,24 +488,18 @@ const animate = (timeStamp) => {
   const deltatime = timeStamp - lastime;
   lastime = timeStamp
   gameOver = false
-
   c.fillStyle = " white"
   c.fillRect(0, 0, canvas.width, canvas.height)
-
   if (!specialmode) {
     backGround.draw()
     backGround.update()
-
-
   }
   if (specialmode) {
     c.drawImage(bGStatic, 0, 0, canvas.width, canvas.height)
     gF.draw2()
     gF.update(deltatime)
     player.update(deltatime)
-
   }
-
 
   game.draw(c)
 
@@ -567,15 +510,9 @@ const animate = (timeStamp) => {
   c.restore()
 
   if (pintar) {
-
     botones.forEach(botones =>
       botones.draw())
-
   }
-
-
-
-
   const lasFlechas = (flechas) => {
 
     for (let i = 0; i < flechas.length; i++) {
@@ -589,10 +526,6 @@ const animate = (timeStamp) => {
   lasFlechas(flechasDerecha)
   lasFlechas(flechasAbajo)
   lasFlechas(flechasArriba)
-
-
-
-
   player.draw2(c)
 
   game.update(deltatime)
