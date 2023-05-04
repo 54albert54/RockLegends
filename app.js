@@ -284,6 +284,13 @@ class Player {
     color = color
   }
   input() {
+    
+    document.addEventListener('touchstart', function(event) {
+  event.preventDefault();
+};
+
+    
+    
     window.addEventListener('keydown', e => {
       if ((e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
