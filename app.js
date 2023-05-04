@@ -290,6 +290,7 @@ class Player {
     
     
     window.addEventListener('keydown', e => {
+        e.preventDefault();
       if ((e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
         e.key === 'ArrowLeft' ||
@@ -308,7 +309,9 @@ class Player {
       }
     });
     window.addEventListener('keyup', e => {
-      if (e.key === 'ArrowDown' ||
+      
+        e.preventDefault();
+        if (e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
         e.key === 'ArrowLeft' ||
         e.key === 'ArrowRight' ||
