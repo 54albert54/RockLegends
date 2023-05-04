@@ -285,8 +285,15 @@ class Player {
   }
   input() {
     
-  
-
+  window.addEventListener('touchstart',e {
+  e.preventDefault();
+}, 
+window.addEventListener('touchmove', e {
+  e.preventDefault();
+}, 
+  window.addEventListener('touchend', e {
+  e.preventDefault();
+}, 
     
     
     window.addEventListener('keydown', e => {
