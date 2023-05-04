@@ -285,9 +285,7 @@ class Player {
   }
   input() {
     
-    document.addEventListener('touchstart', function(event) {
-  event.preventDefault();
-};
+  
 
     
     
