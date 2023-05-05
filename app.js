@@ -126,64 +126,10 @@ const nuevaFlechaAzul = () => {
 const dificultad = () => {
   switch (segundos) {
     case 5:
-      game.enemySpeed = 2.5
-      game.enemyInterval = 950
+      game.enemySpeed = 2
+      game.enemyInterval = 1300
       break
-    case 10:
-      game.enemySpeed = 3
-      game.enemyInterval = 900
-      break
-    case 15:
-      game.enemySpeed = 5
-      game.enemyInterval = 850
-      break
-    case 20:
-      game.enemySpeed = 6
-      game.enemyInterval = 800
-      break
-    case 25:
-      game.enemySpeed = 7
-      game.enemyInterval = 750
-      break
-    case 30:
-      game.enemySpeed = 8
-      game.enemyInterval = 700
-    case 35:
-      game.enemySpeed = 9
-      game.enemyInterval = 650
-      break
-    case 40:
-      game.enemySpeed = 10
-      game.enemyInterval = 600
-      break
-    case 45:
-      game.enemySpeed = 11
-      game.enemyInterval = 600
-      break
-    case 50:
-      game.enemySpeed = 12
-      game.enemyInterval = 600
-      break
-    case 55:
-      game.enemySpeed = 13
-      game.enemyInterval = 600
-      break
-    case 60:
-      game.enemySpeed = 13.5
-      game.enemyInterval = 600
-      break
-    case 70:
-      game.enemySpeed = 14
-      game.enemyInterval = 600
-      break
-    case 80:
-      game.enemySpeed = 15
-      game.enemyInterval = 600
-      break
-    case 85:
-      game.enemySpeed = 17
-      game.enemyInterval = 600
-      break
+    
 
   }
 }
