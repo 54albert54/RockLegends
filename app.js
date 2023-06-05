@@ -61,7 +61,7 @@ let flechasAbajo = [];
 
 class Game {
   constructor() {
-    this.enemySpeed = 4
+    this.enemySpeed = 2
     this.newArrow = 0;
     this.enemyTime = 0
     this.enemyInterval = 1000
@@ -171,6 +171,7 @@ const dificultad = () => {
       game.enemySpeed = 15
       game.enemyInterval = 400
       break
+    
 
   }
 }
@@ -271,8 +272,8 @@ class Player {
     color = color
   }
   input() {
-
     window.addEventListener('keydown', e => {
+        
       if ((e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
         e.key === 'ArrowLeft' ||
@@ -291,7 +292,9 @@ class Player {
       }
     });
     window.addEventListener('keyup', e => {
-      if (e.key === 'ArrowDown' ||
+      
+        e.preventDefault();
+        if (e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
         e.key === 'ArrowLeft' ||
         e.key === 'ArrowRight' ||
