@@ -1,3 +1,5 @@
+
+
 const canvas = document.getElementById('canvas');
 const c = canvas.getContext('2d');
 const puntuaje = document.getElementById('puntuaje')
@@ -14,6 +16,7 @@ const imVerde = new Image();
 imVerde.src = flechaverde
 const bGStatic = new Image()
 bGStatic.src = "./assets/bgstatic.png";
+
 
 
 const flecharoja = "./assets/flechaRojo.png";
@@ -127,46 +130,46 @@ const dificultad = () => {
   switch (segundos) {
     case 5:
       game.enemySpeed = 6.5
-      game.enemyInterval = 950
+      game.enemyInterval = 1950
       break
     case 10:
       game.enemySpeed = 7
-      game.enemyInterval = 800
+      game.enemyInterval = 1600
       break
     case 15:
       game.enemySpeed = 8.5
-      game.enemyInterval = 850
+      game.enemyInterval = 1450
       break
     case 20:
       game.enemySpeed = 10
-      game.enemyInterval = 750
+      game.enemyInterval = 1350
       break
     case 25:
       game.enemySpeed = 11.5
-      game.enemyInterval = 500
+      game.enemyInterval = 1200
       break
     case 30:
       game.enemySpeed = 12
-      game.enemyInterval = 600
+      game.enemyInterval =1100
     case 35:
       game.enemySpeed = 12.5
-      game.enemyInterval = 500
+      game.enemyInterval = 900
       break
     case 40:
       game.enemySpeed = 13
-      game.enemyInterval = 400
+      game.enemyInterval = 800
       break
     case 45:
       game.enemySpeed = 13.5
-      game.enemyInterval = 350
+      game.enemyInterval = 750
       break
     case 50:
       game.enemySpeed = 14
-      game.enemyInterval = 300
+      game.enemyInterval = 600
       break
     case 55:
       game.enemySpeed = 15
-      game.enemyInterval = 100
+      game.enemyInterval = 400
       break
 
   }
@@ -268,6 +271,7 @@ class Player {
     color = color
   }
   input() {
+
     window.addEventListener('keydown', e => {
       if ((e.key === 'ArrowDown' ||
         e.key === 'ArrowUp' ||
@@ -349,16 +353,30 @@ class Player {
 
 // funciones del HTML
 const gameStart = () => {
-  inicio.classList.add('noMostrar')
-  botonera.classList.remove('noMostrar'), animate(0);
+  
+  setTimeout(() => {
+    showopciones()
+  }, 500);
 }
 
-const showopciones = () => { opciones.classList.add('mostrar'), opciones.classList.remove('noMostrar') }
+const showopciones = () => { 
+opciones.classList.remove('noMostrar'),
+inicio.classList.add('noMostrar')
+botonera.classList.remove('noMostrar');
+}
 const shangeTime = (t) => {
-  game.maxTime = t, opciones.classList.add('noMostrar');
+  game.maxTime = t, 
+  setTimeout(() => {
+    opciones.classList.add('noMostrar'),
+    animate(0);
+  },600); 
 }
 const specialmodef = () => {
+
   specialmode = true
+  setTimeout(() => {
+    showopciones()
+  }, 500);
 }
 const releaseButons = () => { player.keys = [], botones = [] }
 const pushArriba = () => { player.keys.push('ArrowUp'), r2butons() }
